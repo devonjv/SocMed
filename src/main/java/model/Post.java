@@ -68,9 +68,9 @@ public class Post {
 	 * 
 	 * PUBLIC: Anyone can view.
 	 * 
-	 * PRIVATE: Only friends of poster can view
+	 * PRIVATE: Only friends of poster can view.
 	 * 
-	 * GROUP: Only members of the group it was posted in can view
+	 * GROUP: Only members of the group it was posted in can view.
 	 * 
 	 * BANNED: Post banned. Hidden from system. Can still be viewed by original
 	 * poster.

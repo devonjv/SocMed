@@ -11,6 +11,11 @@
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.format_sql">false</property>
 		<property name="hibernate.connection.pool_size">5</property>
-		<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		<mapping class="model.User"/>
+		<mapping class="model.Post"/>
+		<mapping class="model.Group"/>
+		<mapping class="model.Comment"/>
+		<mapping class="model.Message"/>
 	</session-factory>
 </hibernate-configuration>

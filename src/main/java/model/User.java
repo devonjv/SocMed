@@ -11,7 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import mail.MailMan;
 import utilities.Crypt;
+import utilities.Temper;
 
 @Entity
 @Table(name = "SOCMED_USER")
@@ -92,6 +95,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.status = "ACTIVE";
+		MailMan.welcome(this);
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email, String key) {
@@ -106,6 +110,7 @@ public class User {
 		this.email = email;
 		this.key = key;
 		this.status = "ACTIVE";
+		MailMan.welcome(this);
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email, String key,
@@ -129,6 +134,10 @@ public class User {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 	public String getFirstName() {
@@ -216,5 +225,56 @@ public class User {
 		 * tests whether the user is blocked by an entered user.
 		 */
 		return (user.getBanList().contains(this) || banned());
+	}
+
+	public String name() {
+		return firstName + " " + lastName;
+	}
+
+	public void block(User user) {
+		/**
+		 * blocks the entered user.
+		 */
+		banList.add(user);
+	}
+
+	public void changePassword(String newPassword) {
+		/**
+		 * Used to change the password.
+		 */
+		password = Crypt.encryptWord(newPassword);
+		MailMan.change(this);
+	}
+	
+	public void changeFirstName(String newName) {
+		/**
+		 * Used to change the first name.
+		 */
+		firstName=newName;
+		MailMan.change(this);
+	}
+	
+	public void changeLastName(String newName) {
+		/**
+		 * Used to change the last name.
+		 */
+		lastName=newName;
+		MailMan.change(this);
+	}
+	
+	public void changeEmail(String newEmail) {
+		/**
+		 * Used to change the email.
+		 */
+		email=newEmail;
+		MailMan.change(this);
+	}
+	
+	public void forgotPassword() {
+		/**
+		 * Used to reset the password to a temporary password, and send a message to the user.
+		 */
+		password=Crypt.encryptWord("@TMP_"+Temper.chunk(7));
+		MailMan.newPassword(this);
 	}
 }

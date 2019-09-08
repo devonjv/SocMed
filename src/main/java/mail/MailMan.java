@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import model.User;
+import utilities.Crypt;
 
 public class MailMan {
 	private static final String host = "smtp.live.com";
@@ -15,15 +16,15 @@ public class MailMan {
 	private static final String password = "Vndl_6842";
 	private static final String from = "vndlMessaging@hotmail.com";
 	private static String to;
-	private static final String subject = "Your Temporary Password";
+	private static String subject;
 	private static String message;
+	private static String tail = "\r\rThe PhaseIt Team\r\r(This message was sent automatically, replies will not be seen.)";
 
 	private MailMan() {
 		super();
 	}
 
-	public static void send(User user, String text) {
-		message = "";
+	public static void send(User user) {
 		to = user.getEmail();
 		Properties pro = new Properties();
 		pro.put("mail.smtp.auth", "true");
@@ -36,15 +37,38 @@ public class MailMan {
 			herm.setFrom(new InternetAddress(from));
 			herm.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			herm.setSubject(subject);
-			herm.setText(message);
+			herm.setText(message + tail);
 			herm.saveChanges();
 			Transport bif = ses.getTransport("smtp");
 			bif.connect(host, username, password);
 			bif.sendMessage(herm, herm.getAllRecipients());
 			bif.close();
+			message = "";
+			to = "";
+			subject="";
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
+	public static void welcome(User user) {
+		subject ="Welcome to PhaceIt";
+		message = "Hello " + user.name()
+				+ ",\r\rWelcome to PhaceIt!\nThank you for registering, and we look forward to your future posts.";
+		send(user);
+	}
+
+	public static void newPassword(User user) {
+		subject ="Your temporary password";
+		message = "Hello " + user.name() + ",\r Your temporary password is:\t\"" + Crypt.decryptWord(user.getPassword())
+				+ "\",\r\rPlease use this to sign in and reset your password.";
+		send(user);
+	}
+
+	public static void change(User user) {
+		subject ="Alert from PhaseIt";
+		message = "Hello " + user.name()
+				+ ",\r\rThis email has been sent to let you know that your personal information has been changed.\rIf you are not the one to make these cahnges, you may want to comirm your account security.";
+		send(user);
+	}
 }

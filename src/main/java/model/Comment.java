@@ -27,7 +27,7 @@ public class Comment {
 	@Column(name = "comment_text", nullable = false)
 	private String text;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_username")
 	private User poster;
 
@@ -39,11 +39,11 @@ public class Comment {
 	private Post post;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
-	@JoinColumn(name = "comment_id")
+	@JoinColumn(name = "super_comment_id")
 	private Comment superComment;
 
-	@OneToMany(mappedBy = "superComment", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "comment_id")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "sub_comment_id")
 	private List<Comment> subcomments;
 
 	@Column(name = "comment_likes")

@@ -6,16 +6,21 @@
 		<property name="hibernate.connection.username">devonjv</property>
 		<property name="hibernate.connection.password">dejavir68</property>
 		<property name="hibernate.connection.url">jdbc:oracle:thin:@devondb.cltxktjezlue.us-east-2.rds.amazonaws.com:1521:ORCL</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
 		<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.format_sql">false</property>
 		<property name="hibernate.connection.pool_size">5</property>
-		<property name="hibernate.hbm2ddl.auto">create</property>
-		<mapping class="model.User"/>
-		<mapping class="model.Post"/>
-		<mapping class="model.Group"/>
-		<mapping class="model.Comment"/>
-		<mapping class="model.Message"/>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		<mapping class="model.User" />
+		<mapping class="model.Post" />
+		<mapping class="model.Group" />
+		<mapping class="model.Comment" />
+		<mapping class="model.Message" />
+		<mapping class="model.UserStatus" />
+		<mapping class="model.PostStatus" />
+		<mapping class="model.GroupStatus" />
+		<mapping class="model.MessageStatus" />
+		<mapping class="model.PostType" />
 	</session-factory>
 </hibernate-configuration>

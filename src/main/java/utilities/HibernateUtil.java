@@ -16,7 +16,7 @@ public class HibernateUtil {
 		return ses;
 	}
 
-	public static void closeSes() {
+	public static void closeSession() {
 		ses.close();
 	}
 

@@ -1,17 +1,20 @@
 package model;
 
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import mail.MailMan;
 import utilities.Crypt;
 import utilities.Temper;
@@ -20,8 +23,14 @@ import utilities.Temper;
 @Table(name = "SOCMED_USER")
 public class User {
 
+	protected final static Logger ibis = Logger.getLogger(User.class);
+
 	@Id
-	@Column(name = "user_username")
+	@Column(name = "user_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private String id;
+
+	@Column(name = "user_username", nullable = false, unique = true)
 	private String username;
 
 	@Column(name = "user_password", nullable = false)
@@ -42,34 +51,34 @@ public class User {
 	@Column(name = "user_picture")
 	private String key;
 
-	@ManyToMany(mappedBy = "friends", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_username")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "friend_user_username")
 	private List<User> friends;
 
-	@ManyToMany(mappedBy = "banList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_username")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "banned_user_username")
 	private List<User> banList;
 
-	@ManyToMany(mappedBy = "members", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "group_name")
 	private List<User> groups;
 
-	@OneToMany(mappedBy = "poster", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "post_id")
 	private List<Post> posts;
 
-	@OneToMany(mappedBy = "sender", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "message_id")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "sent_message_id")
 	private List<Message> sentMessages;
 
-	@OneToMany(mappedBy = "reciever", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "message_id")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "received_message_id")
 	private List<Message> receivedMessages;
 
 	/**
 	 * There should be three status states:
 	 * 
-	 * ACVITE: General user, appears in the system.
+	 * ACTIVE: General user, appears in the system.
 	 * 
 	 * ADMIN: System admin. All permissions of an ACTIVE user, but can also ban
 	 * groups and users.
@@ -78,8 +87,9 @@ public class User {
 	 * from the system, though they will still exist in the database. this will also
 	 * prevent the email from being reused to create a new account.
 	 */
-	@Column(name = "user_status", nullable = false)
-	private String status;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_status")
+	private UserStatus status;
 
 	public User() {
 	}
@@ -94,8 +104,9 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.status = "ACTIVE";
+		this.status = UserStatus.getActiveUser();
 		MailMan.welcome(this);
+		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email, String key) {
@@ -109,14 +120,16 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.key = key;
-		this.status = "ACTIVE";
+		this.status = UserStatus.getActiveUser();
 		MailMan.welcome(this);
+		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
-	public User(String username, String password, String firstName, String lastName, String email, String key,
-			List<User> friends, List<User> banList, List<User> groups, List<Post> posts, List<Message> sentMessages,
-			List<Message> receivedMessages, String status) {
+	public User(String id, String username, String password, String firstName, String lastName, String email,
+			String key, List<User> friends, List<User> banList, List<User> groups, List<Post> posts,
+			List<Message> sentMessages, List<Message> receivedMessages, UserStatus status) {
 		super();
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -157,30 +170,36 @@ public class User {
 	}
 
 	public List<User> getFriends() {
+		friends = (List<User>) Hibernate.unproxy(friends);
 		return friends;
 	}
 
 	public List<User> getBanList() {
+		banList = (List<User>) Hibernate.unproxy(banList);
 		return banList;
 	}
 
 	public List<User> getGroups() {
+		groups = (List<User>) Hibernate.unproxy(groups);
 		return groups;
 	}
 
 	public List<Post> getPosts() {
+		posts = (List<Post>) Hibernate.unproxy(posts);
 		return posts;
 	}
 
 	public List<Message> getSentMessages() {
+		sentMessages = (List<Message>) Hibernate.unproxy(sentMessages);
 		return sentMessages;
 	}
 
 	public List<Message> getReceivedMessages() {
+		receivedMessages = (List<Message>) Hibernate.unproxy(receivedMessages);
 		return receivedMessages;
 	}
 
-	public String getStatus() {
+	public UserStatus getStatus() {
 		return status;
 	}
 
@@ -196,21 +215,21 @@ public class User {
 		/**
 		 * Used to update user to ADMIN
 		 */
-		status = "ADMIN";
+		status = UserStatus.getAdminUser();
 	}
 
 	public void ban() {
 		/**
 		 * Used to ban users
 		 */
-		status = "BANNED";
+		status = UserStatus.getBannedUser();
 	}
 
 	public boolean banned() {
 		/**
 		 * Tests whether the user is banned by admin.
 		 */
-		return status.equals("BANNED");
+		return status.equals(UserStatus.getBannedUser());
 	}
 
 	public boolean banned(Group group) {
@@ -245,36 +264,37 @@ public class User {
 		password = Crypt.encryptWord(newPassword);
 		MailMan.change(this);
 	}
-	
+
 	public void changeFirstName(String newName) {
 		/**
 		 * Used to change the first name.
 		 */
-		firstName=newName;
+		firstName = newName;
 		MailMan.change(this);
 	}
-	
+
 	public void changeLastName(String newName) {
 		/**
 		 * Used to change the last name.
 		 */
-		lastName=newName;
+		lastName = newName;
 		MailMan.change(this);
 	}
-	
+
 	public void changeEmail(String newEmail) {
 		/**
 		 * Used to change the email.
 		 */
-		email=newEmail;
+		email = newEmail;
 		MailMan.change(this);
 	}
-	
+
 	public void forgotPassword() {
 		/**
-		 * Used to reset the password to a temporary password, and send a message to the user.
+		 * Used to reset the password to a temporary password, and send a message to the
+		 * user.
 		 */
-		password=Crypt.encryptWord("@TMP_"+Temper.chunk(7));
+		password = Crypt.encryptWord("@TMP_" + Temper.chunk(7));
 		MailMan.newPassword(this);
 	}
 }

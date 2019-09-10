@@ -28,19 +28,20 @@ public class Message {
 	@Column(name = "message_text")
 	private String text;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_username")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "sender_username")
 	private User sender;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_username")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "receiver_username")
 	private User receiver;
 
 	/**
 	 * Determines whether the message is visible to the receiver or not
 	 */
-	@Column(name = "message_status")
-	private boolean visible;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "message_status")
+	private MessageStatus status;
 
 	public Message() {
 	}
@@ -53,17 +54,22 @@ public class Message {
 		this.text = text;
 		this.sender = sender;
 		this.receiver = receiver;
-		visible = true;
+
+		if (!(sender.banned(receiver))) {
+			status = MessageStatus.getVisibleMessage();
+		} else {
+			status = MessageStatus.getHiddenMessage();
+		}
 	}
 
-	public Message(int id, Date sent, String text, User sender, User receiver, boolean visible) {
+	public Message(int id, Date sent, String text, User sender, User receiver, MessageStatus status) {
 		super();
 		this.id = id;
 		this.sent = sent;
 		this.text = text;
 		this.sender = sender;
 		this.receiver = receiver;
-		this.visible = !(sender.banned(receiver));
+		this.status = status;
 	}
 
 	public int getId() {
@@ -87,10 +93,10 @@ public class Message {
 	}
 
 	public boolean isVisible() {
-		return visible;
+		return status.equals(MessageStatus.getVisibleMessage());
 	}
-	
+
 	public void hide() {
-		visible = false;
+		status = MessageStatus.getHiddenMessage();
 	}
 }

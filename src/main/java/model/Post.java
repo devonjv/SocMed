@@ -2,7 +2,6 @@ package model;
 
 import java.sql.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 
 @Entity
 @Table(name = "SOCMED_POST")
 public class Post {
+	
+	protected final static Logger ibis = Logger.getLogger(User.class);
 
 	@Id
 	@Column(name = "post_id")
@@ -33,8 +36,9 @@ public class Post {
 	 * 
 	 * VIDEO: Link to a YouTube video
 	 */
-	@Column(name = "post_type")
-	private String type;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "post_type")
+	private PostType type;
 
 	/**
 	 * Link to either a picture or YouTube video.
@@ -51,15 +55,15 @@ public class Post {
 	@Column(name = "post_likes")
 	private int likes;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_username")
 	private User poster;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "group_name")
 	private Group group;
 
-	@OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "comment_id")
 	private List<Comment> comments;
 
@@ -75,13 +79,14 @@ public class Post {
 	 * BANNED: Post banned. Hidden from system. Can still be viewed by original
 	 * poster.
 	 */
-	@Column(name = "post_status")
-	private String status;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "post_status")
+	private PostStatus status;
 
 	public Post() {
 	}
 
-	public Post(String text, User poster, String status) {
+	public Post(String text, User poster, PostStatus status) {
 		/**
 		 * Used to create a groupless text post.
 		 */
@@ -90,9 +95,10 @@ public class Post {
 		this.poster = poster;
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
+		this.type=PostType.getTextPost();
 	}
 
-	public Post(String text, User poster, Group group, String status) {
+	public Post(String text, User poster, Group group, PostStatus status) {
 		/**
 		 * Used to create a text post in a group.
 		 */
@@ -102,9 +108,10 @@ public class Post {
 		this.group = group;
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
+		this.type=PostType.getTextPost();
 	}
 
-	public Post(String text, User poster, String status, String type, String key) {
+	public Post(String text, User poster, PostStatus status, PostType type, String key) {
 		/**
 		 * Used to create a groupless picture or video post.
 		 */
@@ -117,7 +124,7 @@ public class Post {
 		this.posted = new Date(System.currentTimeMillis());
 	}
 
-	public Post(String text, User poster, Group group, String status, String type, String key) {
+	public Post(String text, User poster, Group group, PostStatus status, PostType type, String key) {
 		/**
 		 * Used to create a picture or video post in a group.
 		 */
@@ -131,10 +138,12 @@ public class Post {
 		this.posted = new Date(System.currentTimeMillis());
 	}
 
-	public Post(int id, Date posted, String text, int likes, User poster, Group group, List<Comment> comments,
-			String status) {
+	public Post(int id, PostType type, String key, Date posted, String text, int likes, User poster, Group group,
+			List<Comment> comments, PostStatus status) {
 		super();
 		this.id = id;
+		this.type = type;
+		this.key = key;
 		this.posted = posted;
 		this.text = text;
 		this.likes = likes;
@@ -144,10 +153,48 @@ public class Post {
 		this.status = status;
 	}
 
+	public PostType getType() {
+		return type;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public Date getPosted() {
+		return posted;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public User getPoster() {
+		return poster;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public List<Comment> getComments() {
+		comments = (List<Comment>) Hibernate.unproxy(comments);
+		return comments;
+	}
+
+	public PostStatus getStatus() {
+		return status;
+	}
+
 	public void addComment(Comment comment) {
 		/**
 		 * adds a comment.
 		 */
+		comments = (List<Comment>) Hibernate.unproxy(comments);
 		comments.add(comment);
 	}
 
@@ -162,6 +209,6 @@ public class Post {
 		/**
 		 * bans the post
 		 */
-		status = "BANNED";
+		status = PostStatus.getBannedPost();
 	}
 }

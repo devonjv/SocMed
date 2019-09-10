@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,8 +37,19 @@ public class MessageDAOImpl implements MessageDAO {
 
 	@Override
 	public void deleteMessage(Message msg) {
-		// TODO Auto-generated method stub
-		
+		Session sess = HibernateUtil.getSession();
+		Transaction tx = sess.beginTransaction();
+		sess.delete(msg);
+		tx.commit();
+		sess.close();
+	}
+	
+	public List<Message> getAllMessages() {
+		Session sess = HibernateUtil.getSession();
+		Criteria crit = sess.createCriteria(Message.class);
+		List<Message> result = crit.list();
+		sess.close();
+		return result;
 	}
 
 }

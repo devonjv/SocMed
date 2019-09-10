@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,8 +37,19 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public void deleteUser(User user) {
-		// TODO Auto-generated method stub
-		
+		Session sess = HibernateUtil.getSession();
+		Transaction tx = sess.beginTransaction();
+		sess.delete(user);
+		tx.commit();
+		sess.close();
+	}
+	
+	public List<User> getAllUsers() {
+		Session sess = HibernateUtil.getSession();
+		Criteria crit = sess.createCriteria(User.class);
+		List<User> result = crit.list();
+		sess.close();
+		return result;
 	}
 
 }

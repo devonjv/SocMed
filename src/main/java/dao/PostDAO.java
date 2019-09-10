@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import model.Post;
 
 public interface PostDAO {
@@ -11,5 +13,7 @@ public interface PostDAO {
 	public void deletePost(Post post);
 	
 	public Post getPostById(int id);
+	
+	public List<Post> getAllPosts();
 
 }

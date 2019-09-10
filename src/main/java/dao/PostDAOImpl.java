@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,8 +37,19 @@ public class PostDAOImpl implements PostDAO {
 
 	@Override
 	public void deletePost(Post post) {
-		// TODO Auto-generated method stub
-		
+		Session sess = HibernateUtil.getSession();
+		Transaction tx = sess.beginTransaction();
+		sess.delete(post);
+		tx.commit();
+		sess.close();
+	}
+	
+	public List<Post> getAllPosts() {
+		Session sess = HibernateUtil.getSession();
+		Criteria crit = sess.createCriteria(Post.class);
+		List<Post> result = crit.list();
+		sess.close();
+		return result;
 	}
 
 }

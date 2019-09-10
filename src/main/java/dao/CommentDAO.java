@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import model.Comment;
 
 public interface CommentDAO {
@@ -11,5 +13,7 @@ public interface CommentDAO {
 	public void deleteComment(Comment comm);
 	
 	public Comment getCommentById(int id);
+	
+	public List<Comment> getAllComments();
 
 }

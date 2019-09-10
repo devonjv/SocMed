@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,8 +37,18 @@ public class GroupDAOImpl implements GroupDAO {
 
 	@Override
 	public void deleteGroup(Group group) {
-		// TODO Auto-generated method stub
-		
+		Session sess = HibernateUtil.getSession();
+		Transaction tx = sess.beginTransaction();
+		sess.delete(group);
+		tx.commit();
+		sess.close();
 	}
-
+	
+	public List<Group> getAllGroups() {
+		Session sess = HibernateUtil.getSession();
+		Criteria crit = sess.createCriteria(Group.class);
+		List<Group> result = crit.list();
+		sess.close();
+		return result;
+	}
 }

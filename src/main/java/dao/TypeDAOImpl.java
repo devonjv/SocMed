@@ -1,39 +1,42 @@
 package dao;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import model.PostType;
-import utilities.HibernateUtil;
+import javax.transaction.Transactional;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import model.PostType;
+
+@Repository("typeDAO")
+@Transactional
 public class TypeDAOImpl implements TypeDAO {
+
+	@Autowired
+	private SessionFactory sf;
+
+	public TypeDAOImpl() {
+	}
 
 	@Override
 	public void setPostTypes() {
-		Session ses = HibernateUtil.getSession();
-		Transaction tx = ses.beginTransaction();
-		ses.save(new PostType(1, "TEXT"));
-		ses.save(new PostType(2, "PICTURE"));
-		ses.save(new PostType(3, "VIDEO"));
-		tx.commit();
-
+		sf.getCurrentSession().save(new PostType(1, "TEXT"));
+		sf.getCurrentSession().save(new PostType(2, "PICTURE"));
+		sf.getCurrentSession().save(new PostType(3, "VIDEO"));
 	}
 
 	@Override
 	public PostType getTextPost() {
-		Session ses = HibernateUtil.getSession();
-		return ses.get(PostType.class, 1);
+		return sf.getCurrentSession().get(PostType.class, 1);
 	}
 
 	@Override
 	public PostType getPicturePost() {
-		Session ses = HibernateUtil.getSession();
-		return ses.get(PostType.class, 2);
+		return sf.getCurrentSession().get(PostType.class, 2);
 	}
 
 	@Override
 	public PostType getVideoPost() {
-		Session ses = HibernateUtil.getSession();
-		return ses.get(PostType.class, 3);
+		return sf.getCurrentSession().get(PostType.class, 3);
 	}
 
 }

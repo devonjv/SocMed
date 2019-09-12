@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import dao.StatusDAOImpl;
 
 @Entity
 @Table(name = "SOCMED_USER_STATUS")
@@ -16,8 +15,6 @@ public class UserStatus {
 
 	@Column(name = "user_status_status", nullable = false, unique = true)
 	private String status;
-
-	static private StatusDAOImpl udao = new StatusDAOImpl();
 
 	public UserStatus() {
 	}
@@ -40,17 +37,4 @@ public class UserStatus {
 	public String toString() {
 		return status;
 	}
-	
-	public static UserStatus getActiveUser() {
-		return udao.getActiveUser();
-	}
-	
-	public static UserStatus getAdminUser() {
-		return udao.getAdminUser();
-	}
-	
-	public static UserStatus getBannedUser() {
-		return udao.getBannedUser();
-	}
-
 }

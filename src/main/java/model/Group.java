@@ -16,13 +16,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
+import utilities.Helper;
 
 @Entity
 @Table(name = "SOCMED_GROUP")
 public class Group {
 
 	protected final static Logger ibis = Logger.getLogger(User.class);
-
+	
 	@Id
 	@Column(name = "group_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -152,7 +153,7 @@ public class Group {
 	}
 
 	public void ban() {
-		status = GroupStatus.getBannedGroup();
+		status = Helper.statusService().getBannedGroup();
 		ibis.info("Group " + name + " banned");
 	}
 

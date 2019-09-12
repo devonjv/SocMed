@@ -15,13 +15,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
+import utilities.Helper;
 
 @Entity
 @Table(name = "SOCMED_POST")
 public class Post {
 	
 	protected final static Logger ibis = Logger.getLogger(User.class);
-
+	
 	@Id
 	@Column(name = "post_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,11 +57,11 @@ public class Post {
 	private int likes;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_username")
+	@JoinColumn(name = "user_id")
 	private User poster;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "group_name")
+	@JoinColumn(name = "group_id")
 	private Group group;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -95,7 +96,7 @@ public class Post {
 		this.poster = poster;
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
-		this.type=PostType.getTextPost();
+		this.type=Helper.typeService().getTextPost();
 	}
 
 	public Post(String text, User poster, Group group, PostStatus status) {
@@ -108,7 +109,7 @@ public class Post {
 		this.group = group;
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
-		this.type=PostType.getTextPost();
+		this.type=Helper.typeService().getTextPost();
 	}
 
 	public Post(String text, User poster, PostStatus status, PostType type, String key) {
@@ -209,6 +210,6 @@ public class Post {
 		/**
 		 * bans the post
 		 */
-		status = PostStatus.getBannedPost();
+		status = Helper.statusService().getBannedPost();
 	}
 }

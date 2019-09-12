@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import dao.StatusDAOImpl;
 
 @Entity
 @Table(name = "SOCMED_POST_STATUS")
@@ -16,8 +15,6 @@ public class PostStatus {
 
 	@Column(name = "post_status_status", nullable = false, unique = true)
 	private String status;
-
-	static private StatusDAOImpl sdao = new StatusDAOImpl();
 
 	public PostStatus() {
 	}
@@ -39,21 +36,5 @@ public class PostStatus {
 	@Override
 	public String toString() {
 		return status;
-	}
-	
-	public static PostStatus getPublicPost() {
-		return sdao.getPublicPost();
-	}
-	
-	public static PostStatus getPrivatePost() {
-		return sdao.getPrivatePost();
-	}
-	
-	public static PostStatus getGroupPost() {
-		return sdao.getGroupPost();
-	}
-	
-	public static PostStatus getBannedPost() {
-		return sdao.getBannedPost();
 	}
 }

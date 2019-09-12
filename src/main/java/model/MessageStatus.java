@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import dao.StatusDAOImpl;
 
 @Entity
 @Table(name = "SOCMED_MESSAGE_STATUS")
@@ -16,8 +15,6 @@ public class MessageStatus {
 
 	@Column(name = "message_status_status", nullable = false, unique = true)
 	private String status;
-
-	static private StatusDAOImpl sdao = new StatusDAOImpl();
 
 	public MessageStatus() {
 	}
@@ -39,13 +36,5 @@ public class MessageStatus {
 	@Override
 	public String toString() {
 		return status;
-	}
-	
-	public static MessageStatus getVisibleMessage() {
-		return sdao.getVisibleMessage();
-	}
-	
-	public static MessageStatus getHiddenMessage() {
-		return sdao.getHiddenMessage();
 	}
 }

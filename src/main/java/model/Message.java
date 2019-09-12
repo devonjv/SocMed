@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import utilities.Helper;
 
 @Entity
 @Table(name = "SOCMED_MESSAGE")
@@ -56,9 +57,9 @@ public class Message {
 		this.receiver = receiver;
 
 		if (!(sender.banned(receiver))) {
-			status = MessageStatus.getVisibleMessage();
+			status = Helper.statusService().getVisibleMessage();
 		} else {
-			status = MessageStatus.getHiddenMessage();
+			status = Helper.statusService().getHiddenMessage();
 		}
 	}
 
@@ -93,10 +94,10 @@ public class Message {
 	}
 
 	public boolean isVisible() {
-		return status.equals(MessageStatus.getVisibleMessage());
+		return status.equals(Helper.statusService().getVisibleMessage());
 	}
 
 	public void hide() {
-		status = MessageStatus.getHiddenMessage();
+		status = Helper.statusService().getHiddenMessage();
 	}
 }

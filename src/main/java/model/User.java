@@ -17,14 +17,15 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import mail.MailMan;
 import utilities.Crypt;
+import utilities.Helper;
 import utilities.Temper;
 
 @Entity
 @Table(name = "SOCMED_USER")
 public class User {
 
-	protected final static Logger ibis = Logger.getLogger(User.class);
-
+	private final static Logger ibis = Logger.getLogger(User.class);
+	
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -90,7 +91,7 @@ public class User {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_status")
 	private UserStatus status;
-
+	
 	public User() {
 	}
 
@@ -99,13 +100,14 @@ public class User {
 		 * Used to create a new User without Profile Picture
 		 */
 		super();
+		System.out.println("in the constructor");
 		this.username = username;
 		this.password = Crypt.encryptWord(password);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.status = UserStatus.getActiveUser();
-		MailMan.welcome(this);
+		this.status = Helper.statusService().getActiveUser();
+		// MailMan.welcome(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
@@ -120,7 +122,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.key = key;
-		this.status = UserStatus.getActiveUser();
+		this.status = Helper.statusService().getActiveUser();
 		MailMan.welcome(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
@@ -202,7 +204,7 @@ public class User {
 	public UserStatus getStatus() {
 		return status;
 	}
-
+	
 	public boolean checkPassword(String entry) {
 		/**
 		 * Used to test an entry against the user's password, will return whether or not
@@ -215,21 +217,21 @@ public class User {
 		/**
 		 * Used to update user to ADMIN
 		 */
-		status = UserStatus.getAdminUser();
+		status = Helper.statusService().getAdminUser();
 	}
 
 	public void ban() {
 		/**
 		 * Used to ban users
 		 */
-		status = UserStatus.getBannedUser();
+		status = Helper.statusService().getBannedUser();
 	}
 
 	public boolean banned() {
 		/**
 		 * Tests whether the user is banned by admin.
 		 */
-		return status.equals(UserStatus.getBannedUser());
+		return status.equals(Helper.statusService().getBannedUser());
 	}
 
 	public boolean banned(Group group) {

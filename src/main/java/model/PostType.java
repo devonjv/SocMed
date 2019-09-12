@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import dao.TypeDAOImpl;
 
 @Entity
 @Table(name = "SOCMED_POST_TYPE")
@@ -15,8 +14,6 @@ public class PostType {
 
 	@Column(name = "post_type_type", nullable = false, unique = true)
 	private String type;
-
-	static private TypeDAOImpl tdao = new TypeDAOImpl();
 
 	public PostType() {
 	}
@@ -38,17 +35,5 @@ public class PostType {
 	@Override
 	public String toString() {
 		return type;
-	}
-	
-	public static PostType getTextPost() {
-		return tdao.getTextPost();
-	}
-	
-	public static PostType getPicturePost() {
-		return tdao.getPicturePost();
-	}
-	
-	public static PostType getVideoPost() {
-		return tdao.getVideoPost();
 	}
 }

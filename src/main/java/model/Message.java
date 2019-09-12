@@ -12,11 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.apache.log4j.Logger;
+
 import utilities.Helper;
 
 @Entity
 @Table(name = "SOCMED_MESSAGE")
 public class Message {
+
+	private final static Logger ibis = Logger.getLogger(User.class);
 
 	@Id
 	@Column(name = "message_id")
@@ -61,6 +66,7 @@ public class Message {
 		} else {
 			status = Helper.statusService().getHiddenMessage();
 		}
+		ibis.info("Message sent from " + sender.name() + " to " + receiver.name());
 	}
 
 	public Message(int id, Date sent, String text, User sender, User receiver, MessageStatus status) {
@@ -99,5 +105,6 @@ public class Message {
 
 	public void hide() {
 		status = Helper.statusService().getHiddenMessage();
+		ibis.info("Message #" + id + " hidden");
 	}
 }

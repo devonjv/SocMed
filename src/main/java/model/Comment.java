@@ -14,9 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
+
 @Entity
 @Table(name = "SOCMED_COMMENT")
 public class Comment {
+
+	private final static Logger ibis = Logger.getLogger(User.class);
 
 	@Id
 	@Column(name = "comment_id")
@@ -62,6 +66,7 @@ public class Comment {
 		this.post = post;
 		this.posted = new Date(System.currentTimeMillis());
 		post.addComment(this);
+		ibis.info("Comment added to post #" + post.getId());
 	}
 
 	public Comment(User poster, String text, Comment superComment) {
@@ -76,6 +81,7 @@ public class Comment {
 		this.post = superComment.getPost();
 		this.posted = new Date(System.currentTimeMillis());
 		superComment.addSubComment(this);
+		ibis.info("Comment added to comment #" + superComment.getId());
 	}
 
 	public Comment(User poster, int id, String text, Date posted, Post post, Comment superComment,
@@ -135,5 +141,6 @@ public class Comment {
 		 * Increments the number of likes.
 		 */
 		likes++;
+		ibis.info("Comment #" + id + " liked");
 	}
 }

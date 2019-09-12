@@ -22,7 +22,7 @@ import utilities.Helper;
 @Table(name = "SOCMED_GROUP")
 public class Group {
 
-	protected final static Logger ibis = Logger.getLogger(User.class);
+	private final static Logger ibis = Logger.getLogger(User.class);
 	
 	@Id
 	@Column(name = "group_id")

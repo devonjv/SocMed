@@ -25,7 +25,7 @@ import utilities.Temper;
 public class User {
 
 	private final static Logger ibis = Logger.getLogger(User.class);
-	
+
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -91,7 +91,7 @@ public class User {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_status")
 	private UserStatus status;
-	
+
 	public User() {
 	}
 
@@ -100,14 +100,13 @@ public class User {
 		 * Used to create a new User without Profile Picture
 		 */
 		super();
-		System.out.println("in the constructor");
 		this.username = username;
 		this.password = Crypt.encryptWord(password);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.status = Helper.statusService().getActiveUser();
-		// MailMan.welcome(this);
+		MailMan.welcome(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
@@ -204,7 +203,7 @@ public class User {
 	public UserStatus getStatus() {
 		return status;
 	}
-	
+
 	public boolean checkPassword(String entry) {
 		/**
 		 * Used to test an entry against the user's password, will return whether or not

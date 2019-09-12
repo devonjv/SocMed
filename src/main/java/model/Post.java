@@ -20,9 +20,9 @@ import utilities.Helper;
 @Entity
 @Table(name = "SOCMED_POST")
 public class Post {
-	
-	protected final static Logger ibis = Logger.getLogger(User.class);
-	
+
+	private final static Logger ibis = Logger.getLogger(User.class);
+
 	@Id
 	@Column(name = "post_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -96,7 +96,8 @@ public class Post {
 		this.poster = poster;
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
-		this.type=Helper.typeService().getTextPost();
+		this.type = Helper.typeService().getTextPost();
+		ibis.info(poster.name() + " added a new text post");
 	}
 
 	public Post(String text, User poster, Group group, PostStatus status) {
@@ -109,7 +110,8 @@ public class Post {
 		this.group = group;
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
-		this.type=Helper.typeService().getTextPost();
+		this.type = Helper.typeService().getTextPost();
+		ibis.info(poster.name() + " added a new text group post to " + group.getName());
 	}
 
 	public Post(String text, User poster, PostStatus status, PostType type, String key) {
@@ -123,6 +125,7 @@ public class Post {
 		this.type = type;
 		this.key = key;
 		this.posted = new Date(System.currentTimeMillis());
+		ibis.info(poster.name() + " added a new media post");
 	}
 
 	public Post(String text, User poster, Group group, PostStatus status, PostType type, String key) {
@@ -137,6 +140,7 @@ public class Post {
 		this.type = type;
 		this.key = key;
 		this.posted = new Date(System.currentTimeMillis());
+		ibis.info(poster.name() + " added a new media group post to " + group.getName());
 	}
 
 	public Post(int id, PostType type, String key, Date posted, String text, int likes, User poster, Group group,
@@ -152,6 +156,10 @@ public class Post {
 		this.group = group;
 		this.comments = comments;
 		this.status = status;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public PostType getType() {
@@ -197,6 +205,7 @@ public class Post {
 		 */
 		comments = (List<Comment>) Hibernate.unproxy(comments);
 		comments.add(comment);
+		ibis.info("Comment added to post #" + id);
 	}
 
 	public void like() {
@@ -204,6 +213,7 @@ public class Post {
 		 * Increases the number of likes
 		 */
 		likes++;
+		ibis.info("Post #" + id + " liked");
 	}
 
 	public void ban() {
@@ -211,5 +221,6 @@ public class Post {
 		 * bans the post
 		 */
 		status = Helper.statusService().getBannedPost();
+		ibis.info("Post #" + id + " banned");
 	}
 }

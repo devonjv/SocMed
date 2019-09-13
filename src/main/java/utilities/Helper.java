@@ -2,6 +2,14 @@ package utilities;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import dao.CommentDAO;
+import dao.GroupDAO;
+import dao.MessageDAO;
+import dao.PostDAO;
+import dao.StatusDAO;
+import dao.TypeDAO;
+import dao.UserDAO;
 import service.StatusService;
 import service.TypeService;
 
@@ -16,6 +24,20 @@ public class Helper {
 	private final static ApplicationContext acon = new ClassPathXmlApplicationContext("ApplicationContext.xml");
 
 	private Helper() {
+	}
+	
+	public static void compile() {
+		/**
+		 * Does nothing but call the helper so the Application Context will be initialized. should be called when everything is setting up
+		 */
+	}
+	
+	public static void setInfoTables() {
+		acon.getBean("statusDAO", StatusDAO.class).setUserStates();
+		acon.getBean("statusDAO", StatusDAO.class).setPostStates();
+		acon.getBean("statusDAO", StatusDAO.class).setGroupStates();
+		acon.getBean("statusDAO", StatusDAO.class).setMessageStates();
+		acon.getBean("typeDAO", TypeDAO.class).setPostTypes();
 	}
 
 	public static ApplicationContext getContext() {
@@ -37,6 +59,41 @@ public class Helper {
 		 * Returns the type service.
 		 */
 		return acon.getBean("typeService", TypeService.class);
+	}
+
+	public static UserDAO userDAO() {
+		/**
+		 * Returns the user DAO.
+		 */
+		return acon.getBean("userDAO", UserDAO.class);
+	}
+	
+	public static PostDAO postDAO() {
+		/**
+		 * Returns the post DAO.
+		 */
+		return acon.getBean("postDAO", PostDAO.class);
+	}
+	
+	public static GroupDAO groupDAO() {
+		/**
+		 * Returns the group DAO.
+		 */
+		return acon.getBean("groupDAO", GroupDAO.class);
+	}
+	
+	public static MessageDAO messageDAO() {
+		/**
+		 * Returns the message DAO.
+		 */
+		return acon.getBean("messageDAO", MessageDAO.class);
+	}
+	
+	public static CommentDAO commentDAO() {
+		/**
+		 * Returns the comment DAO.
+		 */
+		return acon.getBean("commentDAO", CommentDAO.class);
 	}
 
 }

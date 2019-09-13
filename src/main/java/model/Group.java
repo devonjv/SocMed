@@ -81,6 +81,7 @@ public class Group {
 		this.status = status;
 		this.admins.add(creator);
 		this.members.add(creator);
+		Helper.groupDAO().insertGroup(this);
 		ibis.info(creator.name() + " created group: " + name);
 	}
 

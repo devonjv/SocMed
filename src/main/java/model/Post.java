@@ -97,6 +97,7 @@ public class Post {
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
 		this.type = Helper.typeService().getTextPost();
+		Helper.postDAO().insertPost(this);
 		ibis.info(poster.name() + " added a new text post");
 	}
 
@@ -111,6 +112,7 @@ public class Post {
 		this.status = status;
 		this.posted = new Date(System.currentTimeMillis());
 		this.type = Helper.typeService().getTextPost();
+		Helper.postDAO().insertPost(this);
 		ibis.info(poster.name() + " added a new text group post to " + group.getName());
 	}
 
@@ -125,6 +127,7 @@ public class Post {
 		this.type = type;
 		this.key = key;
 		this.posted = new Date(System.currentTimeMillis());
+		Helper.postDAO().insertPost(this);
 		ibis.info(poster.name() + " added a new media post");
 	}
 
@@ -140,6 +143,7 @@ public class Post {
 		this.type = type;
 		this.key = key;
 		this.posted = new Date(System.currentTimeMillis());
+		Helper.postDAO().insertPost(this);
 		ibis.info(poster.name() + " added a new media group post to " + group.getName());
 	}
 

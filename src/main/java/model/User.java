@@ -29,7 +29,7 @@ public class User {
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String id;
+	private int id;
 
 	@Column(name = "user_username", nullable = false, unique = true)
 	private String username;
@@ -100,13 +100,16 @@ public class User {
 		 * Used to create a new User without Profile Picture
 		 */
 		super();
+		System.out.println("in the user constructor");
 		this.username = username;
 		this.password = Crypt.encryptWord(password);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.status = Helper.statusService().getActiveUser();
+		System.out.println("user saved");
 		MailMan.welcome(this);
+		Helper.userDAO().insertUser(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
@@ -123,12 +126,13 @@ public class User {
 		this.key = key;
 		this.status = Helper.statusService().getActiveUser();
 		MailMan.welcome(this);
+		Helper.userDAO().insertUser(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
-	public User(String id, String username, String password, String firstName, String lastName, String email,
-			String key, List<User> friends, List<User> banList, List<User> groups, List<Post> posts,
-			List<Message> sentMessages, List<Message> receivedMessages, UserStatus status) {
+	public User(int id, String username, String password, String firstName, String lastName, String email, String key,
+			List<User> friends, List<User> banList, List<User> groups, List<Post> posts, List<Message> sentMessages,
+			List<Message> receivedMessages, UserStatus status) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -144,6 +148,10 @@ public class User {
 		this.sentMessages = sentMessages;
 		this.receivedMessages = receivedMessages;
 		this.status = status;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getUsername() {
@@ -202,6 +210,13 @@ public class User {
 
 	public UserStatus getStatus() {
 		return status;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + Crypt.decryptWord(password)
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", status=" + status
+				+ "]";
 	}
 
 	public boolean checkPassword(String entry) {

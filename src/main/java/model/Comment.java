@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.apache.log4j.Logger;
 
+import utilities.Helper;
+
 @Entity
 @Table(name = "SOCMED_COMMENT")
 public class Comment {
@@ -66,6 +68,7 @@ public class Comment {
 		this.post = post;
 		this.posted = new Date(System.currentTimeMillis());
 		post.addComment(this);
+		Helper.commentDAO().insertComment(this);
 		ibis.info("Comment added to post #" + post.getId());
 	}
 
@@ -81,6 +84,7 @@ public class Comment {
 		this.post = superComment.getPost();
 		this.posted = new Date(System.currentTimeMillis());
 		superComment.addSubComment(this);
+		Helper.commentDAO().insertComment(this);
 		ibis.info("Comment added to comment #" + superComment.getId());
 	}
 

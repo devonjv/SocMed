@@ -66,6 +66,7 @@ public class Message {
 		} else {
 			status = Helper.statusService().getHiddenMessage();
 		}
+		Helper.messageDAO().insertMessage(this);
 		ibis.info("Message sent from " + sender.name() + " to " + receiver.name());
 	}
 

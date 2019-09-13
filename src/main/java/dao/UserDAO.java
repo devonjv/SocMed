@@ -1,5 +1,19 @@
 package dao;
 
-public class UserDAO {
+import java.util.List;
+
+import model.User;
+
+public interface UserDAO {
+	
+	public void updateUser(User user);
+	
+	public void insertUser(User user);
+	
+	public void deleteUser(User user);
+	
+	public User getUserByUsername(String username);
+	
+	public List<User> getAllUsers();
 
 }

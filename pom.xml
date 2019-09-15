@@ -35,7 +35,13 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.1.5.RELEASE</version>
 		</dependency>
-		<!-- spring framework -->
+		<!-- spring MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>5.1.5.RELEASE</version>
+		</dependency>
+		<!-- spring ORM -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>

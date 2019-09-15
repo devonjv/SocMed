@@ -1,10 +1,6 @@
 package service;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import dao.StatusDAO;
 import model.GroupStatus;

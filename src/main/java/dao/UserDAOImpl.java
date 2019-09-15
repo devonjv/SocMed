@@ -5,8 +5,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import model.User;
+import utilities.Helper;
 
 @Repository("userDAO")
 @Transactional
@@ -41,6 +41,16 @@ public class UserDAOImpl implements UserDAO {
 
 	public List<User> getAllUsers() {
 		return (List<User>) sf.getCurrentSession().createQuery("from User", User.class).list();
+	}
+
+	@Override
+	public List<User> getActiveUsers() {
+		/**
+		 * Despite the name, really returns any user that isn't banned, as system admins
+		 * would also be active users.
+		 */
+		return (List<User>) sf.getCurrentSession().createQuery("from User where status!=:temp", User.class)
+				.setParameter("temp", Helper.statusService().getBannedUser()).list();
 	}
 
 }

@@ -15,5 +15,7 @@ public interface GroupDAO {
 	public Group getGroupByName(String name);
 	
 	public List<Group> getAllGroups();
-
+	
+	public List<Group> getAllPublicGroups();
+	
 }

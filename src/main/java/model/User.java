@@ -100,7 +100,6 @@ public class User {
 		 * Used to create a new User without Profile Picture
 		 */
 		super();
-		System.out.println("in the user constructor");
 		this.username = username;
 		this.password = Crypt.encryptWord(password);
 		this.firstName = firstName;

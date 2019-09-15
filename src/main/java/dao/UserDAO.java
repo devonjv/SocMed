@@ -15,5 +15,7 @@ public interface UserDAO {
 	public User getUserByUsername(String username);
 	
 	public List<User> getAllUsers();
+	
+	public List<User> getActiveUsers();
 
 }

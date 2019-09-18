@@ -53,4 +53,16 @@ public class UserDAOImpl implements UserDAO {
 				.setParameter("temp", Helper.statusService().getBannedUser()).list();
 	}
 
+	@Override
+	public boolean usernameExists(String username) {
+		return (sf.getCurrentSession().createQuery("from User where username=:temp", User.class)
+				.setParameter("temp", username).list().size() > 0);
+	}
+
+	@Override
+	public boolean emailExists(String email) {
+		return (sf.getCurrentSession().createQuery("from User where email=:temp", User.class)
+				.setParameter("temp", email).list().size() > 0);
+	}
+
 }

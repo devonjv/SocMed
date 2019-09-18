@@ -56,32 +56,32 @@ public class User {
 	private String key;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "friend_user_username")
 	private List<User> friends;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "banned_user_username")
 	private List<User> banList;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "group_name")
 	private List<User> groups;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_id")
 	private List<Post> posts;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "sent_message_id")
 	private List<Message> sentMessages;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "received_message_id")
 	private List<Message> receivedMessages;
 
@@ -115,9 +115,8 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.status = Helper.statusService().getActiveUser();
-		System.out.println("user saved");
-		MailMan.welcome(this);
 		Helper.userDAO().insertUser(this);
+		MailMan.welcome(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
@@ -133,8 +132,8 @@ public class User {
 		this.email = email;
 		this.key = key;
 		this.status = Helper.statusService().getActiveUser();
-		MailMan.welcome(this);
 		Helper.userDAO().insertUser(this);
+		MailMan.welcome(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
 	}
 
@@ -234,6 +233,7 @@ public class User {
 		 * Used to update user to ADMIN
 		 */
 		status = Helper.statusService().getAdminUser();
+		Helper.userDAO().updateUser(this);
 	}
 
 	public void ban() {
@@ -241,6 +241,15 @@ public class User {
 		 * Used to ban users
 		 */
 		status = Helper.statusService().getBannedUser();
+		Helper.userDAO().updateUser(this);
+	}
+	
+	public void makeActive() {
+		/**
+		 * Used to reset status to basic user
+		 */
+		status = Helper.statusService().getActiveUser();
+		Helper.userDAO().updateUser(this);
 	}
 
 	public boolean banned() {
@@ -306,6 +315,13 @@ public class User {
 		email = newEmail;
 		MailMan.change(this);
 	}
+	
+	public void changePicture(String key) {
+		this.key = key;
+		Helper.userDAO().updateUser(this);
+		ibis.info(this.name()+" updated their profile picture");
+		MailMan.change(this);
+	}
 
 	public void forgotPassword() {
 		/**
@@ -315,4 +331,5 @@ public class User {
 		password = Crypt.encryptWord("@TMP_" + Temper.chunk(7));
 		MailMan.newPassword(this);
 	}
+
 }

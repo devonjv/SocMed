@@ -24,12 +24,7 @@ public class Crypt {
 	}
 
 	private static String junk(int i) {
-		String str = new String();
-		Random set = new Random();
-		for (int j = 0; j < i; j++) {
-			str += (char) (33 + set.nextInt(100));
-		}
-		return str;
+		return Temper.chunk(i);
 	}
 
 	private static String encrypt(String word) {

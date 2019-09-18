@@ -34,7 +34,7 @@ public class Comment {
 	@Column(name = "comment_text", nullable = false)
 	private String text;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "user_username")
 	private User poster;
 
@@ -50,7 +50,7 @@ public class Comment {
 	private Comment superComment;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "sub_comment_id")
 	private List<Comment> subcomments;
 

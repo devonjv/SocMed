@@ -24,7 +24,7 @@ import utilities.Helper;
 @Table(name = "SOCMED_POST")
 public class Post {
 
-	private final static Logger ibis = Logger.getLogger(User.class);
+	private final static Logger ibis = Logger.getLogger(Post.class);
 
 	@Id
 	@Column(name = "post_id")
@@ -63,12 +63,12 @@ public class Post {
 	@JoinColumn(name = "user_id")
 	private User poster;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "group_id")
 	private Group group;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn(name = "comment_id")
 	private List<Comment> comments;
 

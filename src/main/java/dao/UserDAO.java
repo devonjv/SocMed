@@ -17,5 +17,9 @@ public interface UserDAO {
 	public List<User> getAllUsers();
 	
 	public List<User> getActiveUsers();
+	
+	public boolean usernameExists(String username);
+	
+	public boolean emailExists(String email);
 
 }

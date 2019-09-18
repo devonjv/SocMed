@@ -37,12 +37,10 @@ public class Message {
 	private String text;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "sender_username")
 	private User sender;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "receiver_username")
 	private User receiver;
 

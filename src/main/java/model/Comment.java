@@ -35,7 +35,6 @@ public class Comment {
 	private String text;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "user_username")
 	private User poster;
 
@@ -43,7 +42,6 @@ public class Comment {
 	private Date posted;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_id")
 	private Post post;
 
@@ -52,6 +50,7 @@ public class Comment {
 	private Comment superComment;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "sub_comment_id")
 	private List<Comment> subcomments;
 

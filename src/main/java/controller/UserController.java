@@ -13,7 +13,7 @@ import model.User;
 import utilities.PictureStorage;
 
 @RestController
-@RequestMapping(value="/Users")
+@RequestMapping(value = "/Users")
 public class UserController {
 
 	@Autowired
@@ -59,7 +59,7 @@ public class UserController {
 		/**
 		 * For creating a user with a profile picture
 		 */
-		String key ="/profiles/username.jpg";
+		String key = "/profiles/" + username + ".jpg";
 		PictureStorage.post(file, key);
 		return new User(username, password, firstName, lastName, email, key);
 	}

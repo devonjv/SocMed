@@ -41,7 +41,6 @@ public class Post {
 	 * VIDEO: Link to a YouTube video
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_type")
 	private PostType type;
 
@@ -61,16 +60,15 @@ public class Post {
 	private int likes;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "user_id")
 	private User poster;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "group_id")
 	private Group group;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "comment_id")
 	private List<Comment> comments;
 
@@ -87,7 +85,6 @@ public class Post {
 	 * poster.
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_status")
 	private PostStatus status;
 

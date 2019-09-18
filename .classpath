@@ -32,5 +32,6 @@
 	<classpathentry exported="true" kind="lib" path="src/main/webapp/WEB-INF/lib/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/main/webapp/WEB-INF/lib/aws-java-sdk-s3-1.11.613.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/main/webapp/WEB-INF/lib/ojdbc7.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/webapp/WEB-INF/lib/jackson-databind-2.9.8.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

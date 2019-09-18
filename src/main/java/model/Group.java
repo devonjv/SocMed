@@ -15,9 +15,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.stereotype.Component;
 import utilities.Helper;
 
+@Component
 @Entity
 @Table(name = "SOCMED_GROUP")
 public class Group {
@@ -38,19 +41,23 @@ public class Group {
 	@Column(name = "group_description", nullable = false)
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "member_user_username")
 	private List<User> members;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "admin_user_username")
 	private List<User> admins;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "banned_user_username")
 	private List<User> bannedUsers;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_id")
 	private List<Post> posts;
 
@@ -112,22 +119,18 @@ public class Group {
 	}
 
 	public List<User> getMembers() {
-		members = (List<User>) Hibernate.unproxy(members);
 		return members;
 	}
 
 	public List<User> getAdmins() {
-		admins = (List<User>) Hibernate.unproxy(admins);
 		return admins;
 	}
 
 	public List<User> getBannedUsers() {
-		bannedUsers = (List<User>) Hibernate.unproxy(bannedUsers);
 		return bannedUsers;
 	}
 
 	public List<Post> getPosts() {
-		posts = (List<Post>) Hibernate.unproxy(posts);
 		return posts;
 	}
 
@@ -136,19 +139,16 @@ public class Group {
 	}
 
 	public void addUser(User user) {
-		members = (List<User>) Hibernate.unproxy(members);
 		members.add(user);
 		ibis.info(user.name() + " added to group " + name);
 	}
 
 	public void addAdmin(User user) {
-		admins = (List<User>) Hibernate.unproxy(admins);
 		admins.add(user);
 		ibis.info(user.name() + " promoted to admin of " + name);
 	}
 
 	public void banUser(User user) {
-		bannedUsers = (List<User>) Hibernate.unproxy(bannedUsers);
 		bannedUsers.add(user);
 		ibis.info(user.name() + " banned from group " + name);
 	}
@@ -159,12 +159,10 @@ public class Group {
 	}
 
 	public int members() {
-		members = (List<User>) Hibernate.unproxy(members);
 		return members.size();
 	}
 
 	public void post(Post post) {
-		posts = (List<Post>) Hibernate.unproxy(posts);
 		posts.add(post);
 		ibis.info(post.getPoster().name() + " posted to group " + name);
 	}

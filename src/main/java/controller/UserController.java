@@ -1,17 +1,19 @@
 package controller;
 
+import java.io.File;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import dao.UserDAO;
 import model.User;
+import utilities.PictureStorage;
 
 @RestController
+@RequestMapping(value="/Users")
 public class UserController {
 
 	@Autowired
@@ -21,7 +23,7 @@ public class UserController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping(value = "/Users/getActive")
+	@GetMapping(value = "/getActive")
 	public List<User> getActiveUsers() {
 		/**
 		 * Gets all users
@@ -30,7 +32,7 @@ public class UserController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@PostMapping(value = "/Users/get.{username}")
+	@GetMapping(value = "/get.{username}")
 	public User getUser(@PathVariable("username") String username) {
 		/**
 		 * Gets user by username
@@ -39,7 +41,7 @@ public class UserController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@PostMapping(value = "/Users/add{username}.{password}.{firstName}.{lastName}.{email}")
+	@GetMapping(value = "/add/{username}/{password}/{firstName}/{lastName}/{email}")
 	public User addUser(@PathVariable("username") String username, @PathVariable("password") String password,
 			@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName,
 			@PathVariable("email") String email) {
@@ -50,13 +52,15 @@ public class UserController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@PostMapping(value = "/Users/add{username}.{password}.{firstName}.{lastName}.{email}.{key}")
+	@GetMapping(value = "/add{username}/{password}/{firstName}/{lastName}/{email}/{file}")
 	public User addUser(@PathVariable("username") String username, @PathVariable("password") String password,
 			@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName,
-			@PathVariable("email") String email, @PathVariable("email") String key) {
+			@PathVariable("email") String email, @PathVariable("file") File file) {
 		/**
 		 * For creating a user with a profile picture
 		 */
+		String key ="/profiles/username.jpg";
+		PictureStorage.post(file, key);
 		return new User(username, password, firstName, lastName, email, key);
 	}
 }

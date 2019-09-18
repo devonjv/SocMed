@@ -14,12 +14,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.stereotype.Component;
 import mail.MailMan;
 import utilities.Crypt;
 import utilities.Helper;
 import utilities.Temper;
 
+@Component
 @Entity
 @Table(name = "SOCMED_USER")
 public class User {
@@ -52,27 +55,33 @@ public class User {
 	@Column(name = "user_picture")
 	private String key;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "friend_user_username")
 	private List<User> friends;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "banned_user_username")
 	private List<User> banList;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "group_name")
 	private List<User> groups;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_id")
 	private List<Post> posts;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "sent_message_id")
 	private List<Message> sentMessages;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "received_message_id")
 	private List<Message> receivedMessages;
 
@@ -178,32 +187,26 @@ public class User {
 	}
 
 	public List<User> getFriends() {
-		friends = (List<User>) Hibernate.unproxy(friends);
 		return friends;
 	}
 
 	public List<User> getBanList() {
-		banList = (List<User>) Hibernate.unproxy(banList);
 		return banList;
 	}
 
 	public List<User> getGroups() {
-		groups = (List<User>) Hibernate.unproxy(groups);
 		return groups;
 	}
 
 	public List<Post> getPosts() {
-		posts = (List<Post>) Hibernate.unproxy(posts);
 		return posts;
 	}
 
 	public List<Message> getSentMessages() {
-		sentMessages = (List<Message>) Hibernate.unproxy(sentMessages);
 		return sentMessages;
 	}
 
 	public List<Message> getReceivedMessages() {
-		receivedMessages = (List<Message>) Hibernate.unproxy(receivedMessages);
 		return receivedMessages;
 	}
 

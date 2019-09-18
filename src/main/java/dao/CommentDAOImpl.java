@@ -13,6 +13,9 @@ public class CommentDAOImpl implements CommentDAO {
 
 	@Autowired
 	private SessionFactory sf;
+	
+	public CommentDAOImpl() {
+	}
 
 	@Override
 	public void updateComment(Comment comm) {
@@ -34,6 +37,7 @@ public class CommentDAOImpl implements CommentDAO {
 		sf.getCurrentSession().delete(comm);
 	}
 
+	@Override
 	public List<Comment> getAllComments() {
 		return (List<Comment>) sf.getCurrentSession().createQuery("from SOCMED_COMMENT", Comment.class).list();
 	}

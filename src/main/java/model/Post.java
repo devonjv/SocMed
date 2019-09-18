@@ -14,9 +14,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.stereotype.Component;
 import utilities.Helper;
 
+@Component
 @Entity
 @Table(name = "SOCMED_POST")
 public class Post {
@@ -38,6 +41,7 @@ public class Post {
 	 * VIDEO: Link to a YouTube video
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_type")
 	private PostType type;
 
@@ -57,14 +61,16 @@ public class Post {
 	private int likes;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "user_id")
 	private User poster;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "group_id")
 	private Group group;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "comment_id")
 	private List<Comment> comments;
 
@@ -81,6 +87,7 @@ public class Post {
 	 * poster.
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_status")
 	private PostStatus status;
 
@@ -195,7 +202,6 @@ public class Post {
 	}
 
 	public List<Comment> getComments() {
-		comments = (List<Comment>) Hibernate.unproxy(comments);
 		return comments;
 	}
 
@@ -207,7 +213,6 @@ public class Post {
 		/**
 		 * adds a comment.
 		 */
-		comments = (List<Comment>) Hibernate.unproxy(comments);
 		comments.add(comment);
 		ibis.info("Comment added to post #" + id);
 	}

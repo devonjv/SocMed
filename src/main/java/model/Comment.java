@@ -13,11 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import org.apache.log4j.Logger;
-
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.stereotype.Component;
 import utilities.Helper;
 
+@Component
 @Entity
 @Table(name = "SOCMED_COMMENT")
 public class Comment {
@@ -33,6 +35,7 @@ public class Comment {
 	private String text;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "user_username")
 	private User poster;
 
@@ -40,6 +43,7 @@ public class Comment {
 	private Date posted;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+	@Fetch(value=FetchMode.SUBSELECT)
 	@JoinColumn(name = "post_id")
 	private Post post;
 

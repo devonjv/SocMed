@@ -70,7 +70,6 @@ public class Comment {
 		this.text = text;
 		this.post = post;
 		this.posted = new Date(System.currentTimeMillis());
-		post.addComment(this);
 		Helper.commentDAO().insertComment(this);
 		ibis.info("Comment added to post #" + post.getId());
 	}

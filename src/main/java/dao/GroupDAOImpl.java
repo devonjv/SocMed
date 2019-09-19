@@ -28,7 +28,7 @@ public class GroupDAOImpl implements GroupDAO {
 
 	@Override
 	public Group getGroupByName(String name) {
-		return sf.getCurrentSession().createQuery("from SOCMED_GROUP where group_name=:temp", Group.class)
+		return sf.getCurrentSession().createQuery("from Group where name=:temp", Group.class)
 				.setParameter("temp", name).getSingleResult();
 	}
 
@@ -39,7 +39,7 @@ public class GroupDAOImpl implements GroupDAO {
 
 	@Override
 	public List<Group> getAllGroups() {
-		return (List<Group>) sf.getCurrentSession().createQuery("from SOCMED_GROUP", Group.class).list();
+		return (List<Group>) sf.getCurrentSession().createQuery("from Group", Group.class).list();
 	}
 
 	@Override

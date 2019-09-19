@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import dao.PostDAO;
 import model.Post;
+import model.User;
 import utilities.Helper;
 
 @RestController
@@ -20,6 +23,15 @@ public class PostController {
 	public PostController() {
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/getPublic")
+	public List<Post> getPublicPosts() {
+		/**
+		 * Gets all public posts
+		 */
+		return pdao.getPublicPosts();
+	}
+	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping(value = "/add/public/text/{username}/{text}")
 	public Post addPublicText(@PathVariable("username") String username, @PathVariable("text") String text) {

@@ -56,11 +56,6 @@ public class Group {
 	@JoinColumn(name = "banned_user_username")
 	private List<User> bannedUsers;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value=FetchMode.SUBSELECT)
-	@JoinColumn(name = "post_id")
-	private List<Post> posts;
-
 	/**
 	 * Status types should be:
 	 * 
@@ -93,7 +88,7 @@ public class Group {
 	}
 
 	public Group(int id, String name, Date posted, String description, List<User> members, List<User> admins,
-			List<User> bannedUsers, List<Post> posts, GroupStatus status) {
+			List<User> bannedUsers, GroupStatus status) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -102,7 +97,6 @@ public class Group {
 		this.members = members;
 		this.admins = admins;
 		this.bannedUsers = bannedUsers;
-		this.posts = posts;
 		this.status = status;
 	}
 
@@ -128,10 +122,6 @@ public class Group {
 
 	public List<User> getBannedUsers() {
 		return bannedUsers;
-	}
-
-	public List<Post> getPosts() {
-		return posts;
 	}
 
 	public GroupStatus getStatus() {
@@ -162,8 +152,4 @@ public class Group {
 		return members.size();
 	}
 
-	public void post(Post post) {
-		posts.add(post);
-		ibis.info(post.getPoster().name() + " posted to group " + name);
-	}
 }

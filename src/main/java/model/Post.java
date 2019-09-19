@@ -11,11 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Component;
 import utilities.Helper;
 
@@ -66,11 +63,6 @@ public class Post {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "group_id")
 	private Group group;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinColumn(name = "comment_id")
-	private List<Comment> comments;
 
 	/**
 	 * The status states should be:
@@ -152,7 +144,7 @@ public class Post {
 	}
 
 	public Post(int id, PostType type, String key, Date posted, String text, int likes, User poster, Group group,
-			List<Comment> comments, PostStatus status) {
+			PostStatus status) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -162,7 +154,6 @@ public class Post {
 		this.likes = likes;
 		this.poster = poster;
 		this.group = group;
-		this.comments = comments;
 		this.status = status;
 	}
 
@@ -198,20 +189,8 @@ public class Post {
 		return group;
 	}
 
-	public List<Comment> getComments() {
-		return comments;
-	}
-
 	public PostStatus getStatus() {
 		return status;
-	}
-
-	public void addComment(Comment comment) {
-		/**
-		 * adds a comment.
-		 */
-		comments.add(comment);
-		ibis.info("Comment added to post #" + id);
 	}
 
 	public void like() {

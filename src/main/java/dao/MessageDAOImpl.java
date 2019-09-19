@@ -35,7 +35,7 @@ public class MessageDAOImpl implements MessageDAO {
 	}
 
 	public List<Message> getAllMessages() {
-		return (List<Message>) sf.getCurrentSession().createQuery("from SOCMED_MESSAGE", Message.class).list();
+		return (List<Message>) sf.getCurrentSession().createQuery("from Message", Message.class).list();
 	}
 
 }

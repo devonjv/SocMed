@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
@@ -70,21 +69,6 @@ public class User {
 	@JoinColumn(name = "group_name")
 	private List<User> groups;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinColumn(name = "post_id")
-	private List<Post> posts;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinColumn(name = "sent_message_id")
-	private List<Message> sentMessages;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinColumn(name = "received_message_id")
-	private List<Message> receivedMessages;
-
 	/**
 	 * There should be three status states:
 	 * 
@@ -138,8 +122,7 @@ public class User {
 	}
 
 	public User(int id, String username, String password, String firstName, String lastName, String email, String key,
-			List<User> friends, List<User> banList, List<User> groups, List<Post> posts, List<Message> sentMessages,
-			List<Message> receivedMessages, UserStatus status) {
+			List<User> friends, List<User> banList, List<User> groups, UserStatus status) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -151,9 +134,6 @@ public class User {
 		this.friends = friends;
 		this.banList = banList;
 		this.groups = groups;
-		this.posts = posts;
-		this.sentMessages = sentMessages;
-		this.receivedMessages = receivedMessages;
 		this.status = status;
 	}
 
@@ -195,18 +175,6 @@ public class User {
 
 	public List<User> getGroups() {
 		return groups;
-	}
-
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public List<Message> getSentMessages() {
-		return sentMessages;
-	}
-
-	public List<Message> getReceivedMessages() {
-		return receivedMessages;
 	}
 
 	public UserStatus getStatus() {

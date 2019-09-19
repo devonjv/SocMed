@@ -39,7 +39,7 @@ public class CommentDAOImpl implements CommentDAO {
 
 	@Override
 	public List<Comment> getAllComments() {
-		return (List<Comment>) sf.getCurrentSession().createQuery("from SOCMED_COMMENT", Comment.class).list();
+		return (List<Comment>) sf.getCurrentSession().createQuery("from Comment", Comment.class).list();
 	}
 
 }

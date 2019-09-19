@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import model.Post;
+import utilities.Helper;
 
 @Repository("postDAO")
 @Transactional
@@ -34,8 +35,15 @@ public class PostDAOImpl implements PostDAO {
 		sf.getCurrentSession().delete(post);
 	}
 
+	@Override
 	public List<Post> getAllPosts() {
-		return (List<Post>) sf.getCurrentSession().createQuery("from SOCMED_POST", Post.class).list();
+		return (List<Post>) sf.getCurrentSession().createQuery("from Post", Post.class).list();
+	}
+
+	@Override
+	public List<Post> getPublicPosts() {
+		return (List<Post>) sf.getCurrentSession().createQuery("from Post where status=:temp", Post.class)
+				.setParameter("temp", Helper.statusService().getPublicPost()).list();
 	}
 
 }

@@ -42,7 +42,7 @@ public class PostController {
 	@GetMapping(value = "/add/public/picture/{username}/{text}/{file}")
 	public Post addPublicPicture(@PathVariable("username") String username, @PathVariable("text") String text,
 			@PathVariable("file") File file) {
-		String key = "/posts/#" + (pdao.size() + 1);
+		String key = "posts/#" + (pdao.size() + 1);
 		PictureStorage.post(file, key);
 		return new Post(text, Helper.userDAO().getUserByUsername(username), Helper.statusService().getPublicPost(),
 				Helper.typeService().getPicturePost(), key);

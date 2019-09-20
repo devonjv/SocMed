@@ -1,5 +1,7 @@
 package driver;
 
+import model.User;
+import utilities.Helper;
 
 public class Driver {
 
@@ -37,6 +39,7 @@ public class Driver {
 //		User user = Helper.userDAO().getUserByUsername("Dejavir");
 //		System.out.println(user.checkPassword("pass6842"));
 //		Post p1 = new Post("This is a post", user, Helper.statusService().getPublicPost());
+//		user.changePicture("Vandal");
 		System.out.println("finished");
 	}
 }

@@ -59,7 +59,7 @@ public class UserController {
 		/**
 		 * For creating a user with a profile picture
 		 */
-		String key = "/profiles/" + username + ".jpg";
+		String key = "profiles/" + username + ".jpg";
 		PictureStorage.post(file, key);
 		return new User(username, password, firstName, lastName, email, key);
 	}
@@ -143,7 +143,7 @@ public class UserController {
 		 * To change the profile picture.
 		 */
 		User user = udao.getUserByUsername(username);
-		String key = "/profiles/" + username + ".jpg";
+		String key = "profiles/" + username + ".jpg";
 		PictureStorage.post(file, key);
 		user.changePicture(key);
 		return user;

@@ -11,11 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Component;
 import utilities.Helper;
 
@@ -41,18 +38,13 @@ public class Comment {
 	@Column(name = "comment_posted")
 	private Date posted;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "post_id")
 	private Post post;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "super_comment_id")
 	private Comment superComment;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinColumn(name = "sub_comment_id")
-	private List<Comment> subcomments;
 
 	@Column(name = "comment_likes")
 	private int likes;
@@ -85,7 +77,6 @@ public class Comment {
 		this.superComment = superComment;
 		this.post = superComment.getPost();
 		this.posted = new Date(System.currentTimeMillis());
-		superComment.addSubComment(this);
 		Helper.commentDAO().insertComment(this);
 		ibis.info("Comment added to comment #" + superComment.getId());
 	}
@@ -99,7 +90,6 @@ public class Comment {
 		this.posted = posted;
 		this.post = post;
 		this.superComment = superComment;
-		this.subcomments = subcomments;
 		this.likes = likes;
 	}
 
@@ -127,19 +117,8 @@ public class Comment {
 		return superComment;
 	}
 
-	public List<Comment> getSubcomments() {
-		return subcomments;
-	}
-
 	public int getLikes() {
 		return likes;
-	}
-
-	public void addSubComment(Comment comment) {
-		/**
-		 * Adds a subcomment.
-		 */
-		subcomments.add(comment);
 	}
 
 	public void like() {

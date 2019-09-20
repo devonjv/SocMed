@@ -67,30 +67,97 @@ public class UserController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping(value = "/checkUsername/{username}")
 	public boolean checkUsername(@PathVariable("username") String username) {
+		/**
+		 * For checking if a username exists.
+		 */
 		return udao.usernameExists(username);
 	}
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping(value = "/checkEmail/{email}")
 	public boolean checkEmail(@PathVariable("email") String email) {
+		/**
+		 * For checking if an email exists.
+		 */
 		return udao.usernameExists(email);
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping(value = "/checkPassword/{username}/{entry}")
 	public boolean checkPassword(@PathVariable("username") String username, @PathVariable("entry") String entry) {
+		/**
+		 * To check if the password is correct.
+		 */
 		User user = udao.getUserByUsername(username);
 		return user.checkPassword(entry);
 	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/changePassword/{username}/{entry}")
+	public User changePassword(@PathVariable("username") String username, @PathVariable("entry") String entry) {
+		/**
+		 * To change the password.
+		 */
+		User user = udao.getUserByUsername(username);
+		user.changePassword(entry);
+		return user;
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/changeFirstName/{username}/{entry}")
+	public User changeFirstName(@PathVariable("username") String username, @PathVariable("entry") String entry) {
+		/**
+		 * To change the first name.
+		 */
+		User user = udao.getUserByUsername(username);
+		user.changeFirstName(entry);
+		return user;
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/changeLastName/{username}/{entry}")
+	public User changeLastName(@PathVariable("username") String username, @PathVariable("entry") String entry) {
+		/**
+		 * To change the last name.
+		 */
+		User user = udao.getUserByUsername(username);
+		user.changeLastName(entry);
+		return user;
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/changeEmail/{username}/{entry}")
+	public User changeEmail(@PathVariable("username") String username, @PathVariable("entry") String entry) {
+		/**
+		 * To change the email.
+		 */
+		User user = udao.getUserByUsername(username);
+		user.changeEmail(entry);
+		return user;
+	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping(value = "/updatePic/{username}/{file}")
+	@GetMapping(value = "/changePic/{username}/{file}")
 	public User changePic(@PathVariable("username") String username, @PathVariable("file") File file) {
+		/**
+		 * To change the profile picture.
+		 */
 		User user = udao.getUserByUsername(username);
 		String key = "/profiles/" + username + ".jpg";
 		PictureStorage.post(file, key);
 		user.changePicture(key);
 		return user;
 	}
-
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/forgotPassword/{username}")
+	public User changePic(@PathVariable("username") String username) {
+		/**
+		 * Calls forgot password.
+		 */
+		User user = udao.getUserByUsername(username);
+		user.forgotPassword();
+		return user;
+	}
+	
 }

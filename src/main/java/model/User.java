@@ -250,6 +250,7 @@ public class User {
 		 * blocks the entered user.
 		 */
 		banList.add(user);
+		Helper.userDAO().updateUser(this);
 	}
 
 	public void changePassword(String newPassword) {
@@ -258,6 +259,7 @@ public class User {
 		 */
 		password = Crypt.encryptWord(newPassword);
 		MailMan.change(this);
+		Helper.userDAO().updateUser(this);
 	}
 
 	public void changeFirstName(String newName) {
@@ -266,6 +268,7 @@ public class User {
 		 */
 		firstName = newName;
 		MailMan.change(this);
+		Helper.userDAO().updateUser(this);
 	}
 
 	public void changeLastName(String newName) {
@@ -274,6 +277,7 @@ public class User {
 		 */
 		lastName = newName;
 		MailMan.change(this);
+		Helper.userDAO().updateUser(this);
 	}
 
 	public void changeEmail(String newEmail) {
@@ -282,6 +286,7 @@ public class User {
 		 */
 		email = newEmail;
 		MailMan.change(this);
+		Helper.userDAO().updateUser(this);
 	}
 	
 	public void changePicture(String key) {
@@ -298,6 +303,7 @@ public class User {
 		 */
 		password = Crypt.encryptWord("@TMP_" + Temper.chunk(7));
 		MailMan.newPassword(this);
+		Helper.userDAO().updateUser(this);
 	}
 
 }

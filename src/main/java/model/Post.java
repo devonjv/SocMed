@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.Date;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -198,6 +197,7 @@ public class Post {
 		 * Increases the number of likes
 		 */
 		likes++;
+		Helper.postDAO().updatePost(this);
 		ibis.info("Post #" + id + " liked");
 	}
 

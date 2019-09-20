@@ -24,7 +24,7 @@ public class MailMan {
 		super();
 	}
 
-	public static void send(User user) {
+	private static void send(User user) {
 		to = user.getEmail();
 		Properties pro = new Properties();
 		pro.put("mail.smtp.auth", "true");
@@ -47,7 +47,7 @@ public class MailMan {
 			to = "";
 			subject="";
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			System.out.println("Email not real");
 		}
 	}
 

@@ -1,15 +1,15 @@
 package driver;
 
-import model.Post;
-import model.User;
-import utilities.Helper;
 
 public class Driver {
 
 	public static void main(String[] args) {
+		/**
+		 * Purely for manual tests.
+		 */
 		System.out.println("begin");
-		Helper.compile();
-		System.out.println("helper compiled");
+//		Helper.compile();
+//		System.out.println("helper compiled");
 //		Helper.setInfoTables();
 //		System.out.println("tables set");
 //		User u1=new User("Jodoe","P455word","John","Doe", "jodoe@gamil.com");
@@ -33,11 +33,10 @@ public class Driver {
 //		u5.makeActive();
 //		u6.makeAdmin();
 //		System.out.println("status set");
-		System.out.println(Helper.userDAO().usernameExists("Dejavir"));
-		User user = Helper.userDAO().getUserByUsername("Dejavir");
-		System.out.println(user.checkPassword("pass6842"));
-		Post p1 = new Post("This is a post", user, Helper.statusService().getPublicPost());
+//		System.out.println(Helper.userDAO().usernameExists("Dejavir"));
+//		User user = Helper.userDAO().getUserByUsername("Dejavir");
+//		System.out.println(user.checkPassword("pass6842"));
+//		Post p1 = new Post("This is a post", user, Helper.statusService().getPublicPost());
 		System.out.println("finished");
-
 	}
 }

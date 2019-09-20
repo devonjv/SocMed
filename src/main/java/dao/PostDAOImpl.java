@@ -46,4 +46,12 @@ public class PostDAOImpl implements PostDAO {
 				.setParameter("temp", Helper.statusService().getPublicPost()).list();
 	}
 
+	@Override
+	public int size() {
+		/**
+		 * Returns how many posts exist in the database.
+		 */
+		return sf.getCurrentSession().createQuery("from Post", Post.class).list().size();
+	}
+
 }

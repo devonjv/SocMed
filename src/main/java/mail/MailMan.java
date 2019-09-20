@@ -6,7 +6,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import model.User;
 import utilities.Crypt;
 
@@ -18,7 +17,7 @@ public class MailMan {
 	private static String to;
 	private static String subject;
 	private static String message;
-	private static String tail = "\r\rThe PhaseIt Team\r\r(This message was sent automatically, replies will not be seen.)";
+	private static String tail = "\r\rThe faceit Team\r\r(This message was sent automatically, replies will not be seen.)";
 
 	private MailMan() {
 		super();
@@ -52,9 +51,9 @@ public class MailMan {
 	}
 
 	public static void welcome(User user) {
-		subject ="Welcome to PhaceIt";
+		subject ="Welcome to faceit";
 		message = "Hello " + user.name()
-				+ ",\r\rWelcome to PhaceIt!\nThank you for registering, and we look forward to your future posts.";
+				+ ",\r\rWelcome to faceit!\nThank you for registering, and we look forward to your future posts.";
 		send(user);
 	}
 
@@ -66,7 +65,7 @@ public class MailMan {
 	}
 
 	public static void change(User user) {
-		subject ="Alert from PhaseIt";
+		subject ="Alert from faceit";
 		message = "Hello " + user.name()
 				+ ",\r\rThis email has been sent to let you know that your personal information has been changed.\rIf you are not the one to make these cahnges, you may want to comirm your account security.";
 		send(user);

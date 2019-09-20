@@ -17,5 +17,7 @@ public interface PostDAO {
 	public List<Post> getAllPosts();
 	
 	public List<Post> getPublicPosts();
+	
+	public int size();
 
 }

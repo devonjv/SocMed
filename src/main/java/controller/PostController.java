@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import dao.PostDAO;
 import model.Post;
+import model.User;
 import utilities.Helper;
 import utilities.PictureStorage;
 
@@ -39,7 +41,7 @@ public class PostController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping(value = "/add/public/picture/{username}/{text}/{file}")
+	@PutMapping(value = "/add/public/picture/{username}/{text}/{file}")
 	public Post addPublicPicture(@PathVariable("username") String username, @PathVariable("text") String text,
 			@PathVariable("file") File file) {
 		String key = "posts/#" + (pdao.size() + 1);
@@ -54,5 +56,12 @@ public class PostController {
 		Post post = Helper.postDAO().getPostById(id);
 		post.like();
 		return post;
+	}
+
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value = "/getByUser/{username}")
+	public List<Post> getByUser(@PathVariable("username") String username) {
+		User user = Helper.userDAO().getUserByUsername(username);
+		return pdao.getByUser(user);
 	}
 }

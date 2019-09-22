@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import model.Post;
+import model.User;
 import utilities.Helper;
 
 @Repository("postDAO")
@@ -52,6 +53,12 @@ public class PostDAOImpl implements PostDAO {
 		 * Returns how many posts exist in the database.
 		 */
 		return sf.getCurrentSession().createQuery("from Post", Post.class).list().size();
+	}
+
+	@Override
+	public List<Post> getByUser(User user) {
+		return (List<Post>) sf.getCurrentSession().createQuery("from Post where poster=:temp", Post.class)
+				.setParameter("temp", user).list();
 	}
 
 }

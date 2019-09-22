@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 
 import model.Post;
+import model.User;
 
 public interface PostDAO {
 	
@@ -19,5 +20,7 @@ public interface PostDAO {
 	public List<Post> getPublicPosts();
 	
 	public int size();
+	
+	public List<Post> getByUser(User user);
 
 }

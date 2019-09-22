@@ -54,7 +54,7 @@ public class UserController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@PutMapping(value = "/add/{username}/{password}/{firstName}/{lastName}/{email}/{file}")
+	@PutMapping(value = "/add/{username}/{password}/{firstName}/{lastName}/{email}/withpic")
 	public User addUser(@PathVariable("username") String username, @PathVariable("password") String password,
 			@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName,
 			@PathVariable("email") String email, @RequestBody File file) {

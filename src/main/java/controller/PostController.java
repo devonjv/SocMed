@@ -42,7 +42,7 @@ public class PostController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@PutMapping(value = "/add/public/picture/{username}/{text}/{file}")
+	@PutMapping(value = "/add/public/picture/{username}/{text}")
 	public Post addPublicPicture(@PathVariable("username") String username, @PathVariable("text") String text,
 			@RequestBody File file) {
 		String key = "posts/#" + (pdao.size() + 1);

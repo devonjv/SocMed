@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +45,7 @@ public class PostController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping(value = "/add/public/picture/{username}/{text}")
 	public Post addPublicPicture(@PathVariable("username") String username, @PathVariable("text") String text,
-			@RequestBody File file) {
+			@RequestBody byte[] file) {
 		String key = "posts/#" + (pdao.size() + 1);
 		PictureStorage.post(file, key);
 		return new Post(text, Helper.userDAO().getUserByUsername(username), Helper.statusService().getPublicPost(),

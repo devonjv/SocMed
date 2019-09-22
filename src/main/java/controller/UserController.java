@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +58,7 @@ public class UserController {
 	@PutMapping(value = "/add/{username}/{password}/{firstName}/{lastName}/{email}/withpic")
 	public User addUser(@PathVariable("username") String username, @PathVariable("password") String password,
 			@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName,
-			@PathVariable("email") String email, @RequestBody File file) {
+			@PathVariable("email") String email, @RequestBody byte[] file) {
 		/**
 		 * For creating a user with a profile picture
 		 */
@@ -140,7 +141,7 @@ public class UserController {
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping(value = "/changePic/{username}")
-	public User changePic(@PathVariable("username") String username, @RequestBody File file) {
+	public User changePic(@PathVariable("username") String username, @RequestBody byte[] file) {
 		/**
 		 * To change the profile picture.
 		 */

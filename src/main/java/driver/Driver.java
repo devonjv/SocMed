@@ -1,11 +1,20 @@
 package driver;
 
+import java.awt.FileDialog;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import javax.swing.JFrame;
+
 import model.User;
 import utilities.Helper;
+import utilities.PictureStorage;
 
 public class Driver {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		/**
 		 * Purely for manual tests.
 		 */
@@ -40,6 +49,14 @@ public class Driver {
 //		System.out.println(user.checkPassword("pass6842"));
 //		Post p1 = new Post("This is a post", user, Helper.statusService().getPublicPost());
 //		user.changePicture("Vandal");
+//		JFrame jf = new JFrame();
+//		FileDialog fd = new FileDialog(jf);
+//		fd.setVisible(true);
+//		File[] pic = fd.getFiles();
+//		if (pic.length > 0) {
+//			byte[] file = Files.readAllBytes(pic[0].toPath());
+//			PictureStorage.post(file, "inferno.jpg");
+//		}
 		System.out.println("finished");
 	}
 }

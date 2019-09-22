@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import dao.PostDAO;
@@ -43,7 +44,7 @@ public class PostController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping(value = "/add/public/picture/{username}/{text}/{file}")
 	public Post addPublicPicture(@PathVariable("username") String username, @PathVariable("text") String text,
-			@PathVariable("file") File file) {
+			@RequestBody File file) {
 		String key = "posts/#" + (pdao.size() + 1);
 		PictureStorage.post(file, key);
 		return new Post(text, Helper.userDAO().getUserByUsername(username), Helper.statusService().getPublicPost(),

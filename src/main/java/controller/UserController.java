@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import dao.UserDAO;
@@ -56,7 +57,7 @@ public class UserController {
 	@PutMapping(value = "/add/{username}/{password}/{firstName}/{lastName}/{email}/{file}")
 	public User addUser(@PathVariable("username") String username, @PathVariable("password") String password,
 			@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName,
-			@PathVariable("email") String email, @PathVariable("file") File file) {
+			@PathVariable("email") String email, @RequestBody File file) {
 		/**
 		 * For creating a user with a profile picture
 		 */
@@ -138,8 +139,8 @@ public class UserController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@PutMapping(value = "/changePic/{username}/{file}")
-	public User changePic(@PathVariable("username") String username, @PathVariable("file") File file) {
+	@PutMapping(value = "/changePic/{username}")
+	public User changePic(@PathVariable("username") String username, @RequestBody File file) {
 		/**
 		 * To change the profile picture.
 		 */

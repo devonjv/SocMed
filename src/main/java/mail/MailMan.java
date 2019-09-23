@@ -67,7 +67,7 @@ public class MailMan {
 	public static void change(User user) {
 		subject ="Alert from faceit";
 		message = "Hello " + user.name()
-				+ ",\r\rThis email has been sent to let you know that your personal information has been changed.\rIf you are not the one to make these cahnges, you may want to comirm your account security.";
+				+ ",\r\rThis email has been sent to let you know that your personal information has been changed.\rIf you are not the one to make these cahnges, you may want to confirm your account security.";
 		send(user);
 	}
 }

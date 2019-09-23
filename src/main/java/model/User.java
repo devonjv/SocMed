@@ -99,6 +99,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.status = Helper.statusService().getActiveUser();
+		this.key = "default.jpg";
 		Helper.userDAO().insertUser(this);
 		MailMan.welcome(this);
 		ibis.info(this.name() + " registered as user.\n\tUsername:\t" + username + "\n\tEmail:\t\t" + email);
@@ -211,7 +212,7 @@ public class User {
 		status = Helper.statusService().getBannedUser();
 		Helper.userDAO().updateUser(this);
 	}
-	
+
 	public void makeActive() {
 		/**
 		 * Used to reset status to basic user
@@ -288,11 +289,11 @@ public class User {
 		MailMan.change(this);
 		Helper.userDAO().updateUser(this);
 	}
-	
+
 	public void changePicture(String key) {
 		this.key = key;
 		Helper.userDAO().updateUser(this);
-		ibis.info(this.name()+" updated their profile picture");
+		ibis.info(this.name() + " updated their profile picture");
 		MailMan.change(this);
 	}
 

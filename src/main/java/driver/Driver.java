@@ -49,14 +49,17 @@ public class Driver {
 //		System.out.println(user.checkPassword("pass6842"));
 //		Post p1 = new Post("This is a post", user, Helper.statusService().getPublicPost());
 //		user.changePicture("Vandal");
-//		JFrame jf = new JFrame();
-//		FileDialog fd = new FileDialog(jf);
-//		fd.setVisible(true);
-//		File[] pic = fd.getFiles();
-//		if (pic.length > 0) {
-//			byte[] file = Files.readAllBytes(pic[0].toPath());
-//			PictureStorage.post(file, "inferno.jpg");
-//		}
+		JFrame jf = new JFrame();
+		FileDialog fd = new FileDialog(jf);
+		fd.setVisible(true);
+		File[] pic = fd.getFiles();
+		if (pic.length > 0) {
+			byte[] file = Files.readAllBytes(pic[0].toPath());
+			PictureStorage.post(file, "inferno.jpg");
+		}
+//		User ctg = Helper.userDAO().getUserByUsername("Inferno");
+//		System.out.println("fetched");
+//		ctg.changePicture("inferno.jpg");
 		System.out.println("finished");
 	}
 }
